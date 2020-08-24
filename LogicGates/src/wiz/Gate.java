@@ -1,8 +1,10 @@
 package wiz;
 
-public class Gate extends LinkedList{
+public class Gate{
 	
 	protected int input1;
+	protected int output;
+
 
 	public Gate(int input1) {
 		this.input1 = input1;
@@ -15,6 +17,9 @@ public class Gate extends LinkedList{
 	protected int getInput1() {
 		return input1;
 	}
-	
 
+	public int getOutput() {
+		
+		return output;
+	}
 }

@@ -2,13 +2,12 @@ package wiz;
 
 public class NotGate extends Gate {
 	
-	protected int output1;
 	
 	
 	public NotGate(int input1) {
 		super(input1);
-		output1= not();
-		System.out.println(output1);
+		super.output= not();
+		
 	}
 	
 	private int not() {
@@ -16,6 +15,12 @@ public class NotGate extends Gate {
 			return 1;
 		}
 		return 0;
+	}
+	
+	public int getOutput() {
+		
+		return super.getOutput();
+
 	}
 
 }
