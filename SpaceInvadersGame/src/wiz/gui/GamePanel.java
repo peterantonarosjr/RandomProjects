@@ -3,10 +3,10 @@ package wiz.gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.util.List;
-
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -24,13 +24,14 @@ public class GamePanel extends JPanel{
 	
 	private ImageIcon backgroundImage;
 	private Timer timer;
+
 	private FriendlyShip spaceShip;
 	private Lasers laser;
 	private boolean inGame = true;
 	private JLabel scoreBoard;
 	private int score = 0;
-	private int direction = 1;
 	private List<EnemyShip> enemyList;
+	
 	
 	public GamePanel() {
 		
@@ -60,8 +61,9 @@ public class GamePanel extends JPanel{
 		scoreBoard.setBounds(Constants.BOARD_WIDTH-85, 20, 85, 20);
 		this.add(scoreBoard);
 		this.setLayout(null);
-		this.timer = new Timer(Constants.GAME_REFRESH, new GameLoop(this));
-		this.timer.start();
+		timer = new Timer(Constants.GAME_REFRESH, new GameLoop(this));
+		timer.start();
+		
 	}
 
 	private void createLayout() {
@@ -76,7 +78,7 @@ public class GamePanel extends JPanel{
 	}
 	
 	private void drawLaser(Graphics g) {
-		if(!laser.isDead()) {
+		if(laser.isDead()==false) {
 			g.drawImage(laser.getImage(), laser.getX(), laser.getY(), this);
 		}
 	}
@@ -97,14 +99,15 @@ public class GamePanel extends JPanel{
 		super.paintComponent(g);
 		g.drawImage(backgroundImage.getImage(), 0, 0, null);
 		drawAll(g);
-		System.out.println("Paint");
+		//System.out.println("Paint");
 	}
 
 	private void drawAll(Graphics g) {
 		if(inGame) {
 			drawPlayer(g);
-			drawLaser(g);
 			drawAliens(g);
+			drawLaser(g);
+
 		}else {
 			if(timer.isRunning()) {
 				timer.stop();
@@ -112,31 +115,55 @@ public class GamePanel extends JPanel{
 		}
 		Toolkit.getDefaultToolkit().sync();
 		
-		System.out.println("PlayerDrawn");
+		//System.out.println("PlayerDrawn");
 		
 	}
 
 
 	public void completeCycle() {
+		checkCollision();
 		update();
 		repaint();
+		
+	}
+
+	private void checkCollision() {
+		for(EnemyShip enemyShip : enemyList) {
+			if(enemyShip.isVisible() && !laser.isDead()) {
+				Rectangle r2 = enemyShip.getBounds();
+				Rectangle r3 = laser.getBounds();
+				if(r3.intersects(r2)) {
+					laser.die();
+					enemyShip.die();
+					enemyShip.setVisible(false);
+					updateScore();
+				}
+			}
+		}		
 		
 	}
 
 	private void update() {
 		this.spaceShip.move();
 		this.laser.move();
-		//updateScore();
-		System.out.println("Update");
+		
+		for(EnemyShip enemyShip : enemyList) {
+			if(!enemyShip.isRight() && enemyShip.isVisible()) {
+				enemyShip.move(2);
+			}else {
+				enemyShip.move(-2);
+			}
+		}
 		
 	}
-	/**
+
+
 	private void updateScore() {
 		//Change score if laser hits enemy ship
 		score++;
 		scoreBoard.setText("Score: "+score);
 	}
-	**/
+
 	
 	public void keyReleased(KeyEvent e) {
 		this.spaceShip.keyReleased(e);
