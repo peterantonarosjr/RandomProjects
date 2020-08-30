@@ -9,10 +9,12 @@ import wiz.image.Images;
 
 
 public class FriendlyShip extends Sprite {
+	private int health;
 	
 	
 	public FriendlyShip() {
 		init();
+		this.setHealth(10);
 	}
 	
 	private void init() {
@@ -57,6 +59,14 @@ public class FriendlyShip extends Sprite {
 		if(key==KeyEvent.VK_D) {
 			dx=2;
 		}
+	}
+
+	public int getHealth() {
+		return health;
+	}
+
+	public void setHealth(int health) {
+		this.health = health;
 	}
 	
 	

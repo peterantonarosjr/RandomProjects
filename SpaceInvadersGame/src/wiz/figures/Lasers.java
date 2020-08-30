@@ -1,6 +1,6 @@
 package wiz.figures;
 
-import java.awt.event.KeyEvent;
+import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
 
@@ -38,14 +38,9 @@ public class Lasers extends Sprite {
 		
 	}
 	
-	/**
-	public void keyReleased(KeyEvent e) {
-		int key = e.getKeyCode();
+	public Rectangle getBounds() {
 		
+		return new Rectangle(this.x,this.y,Constants.LASER_WIDTH,Constants.LASER_HEIGHT);
 	}
 
-	public void keyPressed(KeyEvent e) {
-		int key = e.getKeyCode();
-	}
-	**/
 }
