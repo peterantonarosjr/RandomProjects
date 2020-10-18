@@ -98,7 +98,12 @@ public class Polynomial {
         return poly;
     }
 
-    public void subPoly(){
+    public Polynomial subPoly(){
+        Polynomial poly = new Polynomial();
+
+        poly.sort();
+        poly.finalizePoly();
+        return poly;
 
     }
 
